@@ -1,0 +1,21 @@
+# Goal
+float64 x
+float64 y
+float64 z
+float64 qx
+float64 qy
+float64 qz
+float64 qw
+uint8 approach_index
+float64 thx
+float64 thy
+float64 thz
+
+---
+# Result
+bool success
+string message
+ 
+---
+# Feedback
+float64 progress

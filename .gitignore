@@ -1,0 +1,9 @@
+# Common build and log directories
+/build/
+/install/
+/log/
+
+# Editor and OS junk
+*~
+*.swp
+.DS_Store

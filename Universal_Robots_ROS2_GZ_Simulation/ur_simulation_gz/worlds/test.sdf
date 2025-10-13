@@ -1,0 +1,985 @@
+<sdf version='1.9'>
+  <world name='EV_scenario'>
+    <physics name='1ms' type='ignored'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/>
+    <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system'/>
+    <plugin name='gz::sim::systems::SceneBroadcaster' filename='gz-sim-scene-broadcaster-system'/>
+    <plugin name='gz::sim::systems::Contact' filename='gz-sim-contact-system'/>
+    <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'>
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+    </scene>
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>0 0 0 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='arm_base'>
+      <pose>-0 0 0.199999 -0 -0 -0</pose>
+      <link name='box_link'>
+        <inertial>
+          <inertia>
+            <ixx>0.16666</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.16666</iyy>
+            <iyz>0</iyz>
+            <izz>0.16666</izz>
+          </inertia>
+          <mass>1</mass>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='box_collision'>
+          <geometry>
+            <box>
+              <size>0.5 0.5 0.4</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='box_visual'>
+          <geometry>
+            <box>
+              <size>0.5 0.5 0.4</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>1 1 1 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <enable_wind>false</enable_wind>
+      </link>
+      <static>false</static>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='hatchback'>
+      <pose>-1.67 1.52 0 0 -0 3.14</pose>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0254 0.03 0.03</scale>
+              <uri>https://fuel.gazebosim.org/1.0/openrobotics/models/hatchback/3/files/meshes/hatchback.obj</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='visual'>
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.0254 0.03 0.03</scale>
+              <uri>https://fuel.gazebosim.org/1.0/openrobotics/models/hatchback/3/files/meshes/hatchback.obj</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='ccs2_inlet'>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <scale>0.012 0.012 0.012</scale>
+              <uri>file:///root/ur16e_test/src/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models/ccs2_inlet/ccs2_inlet.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>1 1 1 1</specular>
+          </material>
+        </visual>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <scale>0.012 0.012 0.012</scale>
+              <uri>file:///root/ur16e_test/src/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models/ccs2_inlet/ccs2_inlet.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>-0.8 0.24 1.05 -0.26 0 1.57</pose>
+      <static>true</static>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='ccs2_inlet_cube'>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <scale>0.13 0.13 0.13</scale>
+              <uri>file:///root/ur16e_test/src/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models/ccs2_inlet_cube/ccs2_inlet_box.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <scale>0.13 0.13 0.13</scale>
+              <uri>file:///root/ur16e_test/src/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models/ccs2_inlet_cube/ccs2_inlet_box.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>-0.85 -0.2 1.22 0 -0.26 0</pose>
+      <static>true</static>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='stationary_camera_model'>
+      <static>true</static>
+      <pose>1.6 0 2.18 0 0.67 3.14</pose>
+      <link name='stationary_camera_link'>
+        <inertial>
+          <mass>0.10000000000000001</mass>
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.001</iyy>
+            <iyz>0</iyz>
+            <izz>0.001</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.1 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <enable_wind>false</enable_wind>
+      </link>
+      <joint name='stationary_camera_optical_joint' type='fixed'>
+        <parent>stationary_camera_link</parent>
+        <child>stationary_camera_optical_link</child>
+        <pose>0 0 0 0 1.57 0</pose>
+      </joint>
+      <link name='stationary_camera_optical_link'>
+        <sensor name='fixed_rgbd_sensor' type='rgbd_camera'>
+          <pose>0 0 0 0 0 0</pose>
+          <visualize>true</visualize>
+          <update_rate>30</update_rate>
+          <always_on>true</always_on>
+          <camera>
+            <horizontal_fov>1.5</horizontal_fov>
+            <image>
+              <format>R8G8B8</format>
+              <width>1920</width>
+              <height>1080</height>
+            </image>
+            <clip>
+              <near>0.050000000000000003</near>
+              <far>5</far>
+            </clip>
+            <vertical_fov>1.089</vertical_fov>
+          </camera>
+          <plugin name='gz::sim::systems::Ros2ImageBridge' filename='gz-sim-ros-image-bridge'>
+            <gz_topic>/world/EV_scenario/model/stationary_camera_model/link/stationary_camera_optical_link/sensor/fixed_rgbd_sensor/image</gz_topic>
+            <ros_topic>/stationary_camera/image</ros_topic>
+            <frame_id>stationary_camera_optical_link</frame_id>
+            <camera_info_topic>/world/EV_scenario/model/stationary_camera_model/link/stationary_camera_optical_link/sensor/fixed_rgbd_sensor/camera_info</camera_info_topic>
+          </plugin>
+          <plugin name='gz::sim::systems::Ros2DepthCameraBridge' filename='gz-sim-ros-depth-camera-bridge'>
+            <gz_topic>/world/EV_scenario/model/stationary_camera_model/link/stationary_camera_optical_link/sensor/fixed_rgbd_sensor/depth_image</gz_topic>
+            <ros_topic>/stationary_camera/depth_image</ros_topic>
+            <point_cloud_topic>/world/EV_scenario/model/stationary_camera_model/link/stationary_camera_optical_link/sensor/fixed_rgbd_sensor/depth_points</point_cloud_topic>
+            <frame_id>stationary_camera_optical_link</frame_id>
+          </plugin>
+          <depth_camera>
+            <clip>
+              <near>0.05</near>
+              <far>5.0</far>
+            </clip>
+          </depth_camera>
+        </sensor>
+        <pose>0 -0 0 -0 0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='stationary_camera_base'>
+      <pose>1.7 -0 1.1 0 0 0</pose>
+      <link name='box_link'>
+        <inertial>
+          <inertia>
+            <ixx>0.16666</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.16666</iyy>
+            <iyz>0</iyz>
+            <izz>0.16666</izz>
+          </inertia>
+          <mass>1</mass>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='box_collision'>
+          <geometry>
+            <box>
+              <size>0.1 0.1 2.2</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='box_visual'>
+          <geometry>
+            <box>
+              <size>0.1 0.1 2.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>1 1 1 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <enable_wind>false</enable_wind>
+      </link>
+      <static>false</static>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='ur'>
+      <joint name='base_joint' type='fixed'>
+        <pose>0 0 0 0 -0 0</pose>
+        <parent>world</parent>
+        <child>base_link</child>
+      </joint>
+      <link name='base_link'>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>4</mass>
+          <inertia>
+            <ixx>0.0061063300000000001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0061063300000000001</iyy>
+            <iyz>0</iyz>
+            <izz>0.01125</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_link_inertia_collision'>
+          <pose>0 0 0 0 0 -2.449293598294706e-16</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/collision/base.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='base_link_inertia_visual'>
+          <pose>0 0 0 0 0 -2.449293598294706e-16</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/visual/base.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <enable_wind>false</enable_wind>
+      </link>
+      <joint name='shoulder_pan_joint' type='revolute'>
+        <pose>0 0 0 0 -0 0</pose>
+        <parent>base_link</parent>
+        <child>shoulder_link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-6.2831900000000003</lower>
+            <upper>6.2831900000000003</upper>
+            <effort>330</effort>
+            <velocity>2.0943999999999998</velocity>
+            <stiffness>100000000</stiffness>
+            <dissipation>1</dissipation>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+            <damping>0</damping>
+            <friction>0</friction>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='shoulder_link'>
+        <pose>0 0 0.1807 0 -0 -3.14159</pose>
+        <inertial>
+          <pose>0 -0.03 -0.016 1.5708 -0 0</pose>
+          <mass>7.3689999999999998</mass>
+          <inertia>
+            <ixx>0.033509999999999998</ixx>
+            <ixy>2.0000000000000002e-05</ixy>
+            <ixz>-1.0000000000000001e-05</ixz>
+            <iyy>0.033739999999999999</iyy>
+            <iyz>0.0037399999999999998</iyz>
+            <izz>0.021000000000000001</izz>
+          </inertia>
+        </inertial>
+        <collision name='shoulder_link_collision'>
+          <pose>0 0 0 0 0 3.141592653589793</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/collision/shoulder.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='shoulder_link_visual'>
+          <pose>0 0 0 0 0 3.141592653589793</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/visual/shoulder.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <enable_wind>false</enable_wind>
+      </link>
+      <joint name='shoulder_lift_joint' type='revolute'>
+        <pose>0 0 0 0 -0 0</pose>
+        <parent>shoulder_link</parent>
+        <child>upper_arm_link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-6.2831900000000003</lower>
+            <upper>6.2831900000000003</upper>
+            <effort>330</effort>
+            <velocity>2.0943999999999998</velocity>
+            <stiffness>100000000</stiffness>
+            <dissipation>1</dissipation>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+            <damping>0</damping>
+            <friction>0</friction>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='upper_arm_link'>
+        <pose>0 0 0.1807 1.5708 0.392683 -3.14159</pose>
+        <inertial>
+          <pose>-0.1764 0 0.16 0 -0 0</pose>
+          <mass>10.449999999999999</mass>
+          <inertia>
+            <ixx>0.027959999999999999</ixx>
+            <ixy>-0.0001</ixy>
+            <ixz>-0.0071999999999999998</ixz>
+            <iyy>0.47558</iyy>
+            <iyz>3.0000000000000001e-05</iyz>
+            <izz>0.47635</izz>
+          </inertia>
+        </inertial>
+        <collision name='upper_arm_link_collision'>
+          <pose>0 0 0.176 1.570796326794896 0 -1.570796326794896</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur16e/collision/upperarm.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='upper_arm_link_visual'>
+          <pose>0 0 0.176 1.570796326794896 0 -1.570796326794896</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur16e/visual/upperarm.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <enable_wind>false</enable_wind>
+      </link>
+      <joint name='elbow_joint' type='revolute'>
+        <pose>0 0 -0 0 -0 0</pose>
+        <parent>upper_arm_link</parent>
+        <child>forearm_link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-3.1415899999999999</lower>
+            <upper>3.1415899999999999</upper>
+            <effort>150</effort>
+            <velocity>3.1415899999999999</velocity>
+            <stiffness>100000000</stiffness>
+            <dissipation>1</dissipation>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+            <damping>0</damping>
+            <friction>0</friction>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='forearm_link'>
+        <pose>0.441987 1e-06 0.363768 -1.5708 0.392685 2e-06</pose>
+        <inertial>
+          <pose>-0.166 0 0.065 0 -0 0</pose>
+          <mass>4.3209999999999997</mass>
+          <inertia>
+            <ixx>0.01091</ixx>
+            <ixy>6.0000000000000002e-05</ixy>
+            <ixz>0.010120000000000001</ixz>
+            <iyy>0.1206</iyy>
+            <iyz>1.0000000000000001e-05</iyz>
+            <izz>0.11713999999999999</izz>
+          </inertia>
+        </inertial>
+        <collision name='forearm_link_collision'>
+          <pose>0 0 0.04 1.570796326794896 0 -1.570796326794896</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur16e/collision/forearm.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='forearm_link_visual'>
+          <pose>0 0 0.04 1.570796326794896 0 -1.570796326794896</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur16e/visual/forearm.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <enable_wind>false</enable_wind>
+      </link>
+      <joint name='wrist_1_joint' type='revolute'>
+        <pose>0 0 -0 0 -0 0</pose>
+        <parent>forearm_link</parent>
+        <child>wrist_1_link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-6.2831900000000003</lower>
+            <upper>6.2831900000000003</upper>
+            <effort>54</effort>
+            <velocity>3.1415899999999999</velocity>
+            <stiffness>100000000</stiffness>
+            <dissipation>1</dissipation>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+            <damping>0</damping>
+            <friction>0</friction>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='wrist_1_link'>
+        <pose>0.109388 0.17415 0.50153 -1.5708 -0.057315 2e-06</pose>
+        <inertial>
+          <pose>0 -0.011 -0.009 1.5708 -0 0</pose>
+          <mass>2.1800000000000002</mass>
+          <inertia>
+            <ixx>0.0060899999999999999</ixx>
+            <ixy>-1.0000000000000001e-05</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0024499999999999999</iyy>
+            <iyz>0.00083000000000000001</iyz>
+            <izz>0.00579</izz>
+          </inertia>
+        </inertial>
+        <collision name='wrist_1_link_collision'>
+          <pose>0 0 -0.135 1.570796326794896 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/collision/wrist1.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='wrist_1_link_visual'>
+          <pose>0 0 -0.135 1.570796326794896 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/visual/wrist1.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <enable_wind>false</enable_wind>
+      </link>
+      <joint name='wrist_2_joint' type='revolute'>
+        <pose>0 0 0 0 0 -0</pose>
+        <parent>wrist_1_link</parent>
+        <child>wrist_2_link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-6.2831900000000003</lower>
+            <upper>6.2831900000000003</upper>
+            <effort>54</effort>
+            <velocity>3.1415899999999999</velocity>
+            <stiffness>100000000</stiffness>
+            <dissipation>1</dissipation>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+            <damping>0</damping>
+            <friction>0</friction>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='wrist_2_link'>
+        <pose>0.102522 0.17415 0.621183 -0.057315 -4.6e-05 1.57</pose>
+        <inertial>
+          <pose>0 0.012 -0.018 -1.5708 0 0</pose>
+          <mass>2.0329999999999999</mass>
+          <inertia>
+            <ixx>0.0038899999999999998</ixx>
+            <ixy>-1.0000000000000001e-05</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0021900000000000001</iyy>
+            <iyz>-0.00044999999999999999</iyz>
+            <izz>0.00363</izz>
+          </inertia>
+        </inertial>
+        <collision name='wrist_2_link_collision'>
+          <pose>0 0 -0.12 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/collision/wrist2.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='wrist_2_link_visual'>
+          <pose>0 0 -0.12 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/visual/wrist2.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <enable_wind>false</enable_wind>
+      </link>
+      <joint name='wrist_3_joint' type='revolute'>
+        <pose>0 -0 -0 0 -0 0</pose>
+        <parent>wrist_2_link</parent>
+        <child>wrist_3_link</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-6.2831900000000003</lower>
+            <upper>6.2831900000000003</upper>
+            <effort>54</effort>
+            <velocity>3.1415899999999999</velocity>
+            <stiffness>100000000</stiffness>
+            <dissipation>1</dissipation>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+            <damping>0</damping>
+            <friction>0</friction>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='wrist_3_link'>
+        <pose>-0.013836 0.174243 0.614507 -1.62811 -4.6e-05 1.57</pose>
+        <inertial>
+          <pose>0 0.010924 -0.0297 0 -0 0</pose>
+          <mass>1.0069999999999999</mass>
+          <inertia>
+            <ixx>0.014127499999999999</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.013047700000000001</iyy>
+            <iyz>-0.0014266999999999999</iyz>
+            <izz>0.011929800000000001</izz>
+          </inertia>
+        </inertial>
+        <collision name='wrist_3_link_collision'>
+          <pose>0 0 -0.1168 1.570796326794896 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/collision/wrist3.stl</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='wrist_3_link_visual'>
+          <pose>0 0 -0.1168 1.570796326794896 0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///root/ur16e_test/install/ur_description/share/ur_description/meshes/ur10e/visual/wrist3.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='wrist_3_link_fixed_joint_lump__camera_link_visual_1'>
+          <pose>0 -0.05 -0.02 0 -1.570796326794897 1.570796326794897</pose>
+          <geometry>
+            <box>
+              <size>0.01 0.01 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/black</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <diffuse>1 0 0 1</diffuse>
+            <ambient>1 0 0 1</ambient>
+          </material>
+        </visual>
+        <visual name='wrist_3_link_fixed_joint_lump__camera_optical_link_visual_2'>
+          <pose>8.673617379884035e-19 -0.05 -0.015 1.570092458683775e-16 -1.570092458683775e-16 1.570796326794896</pose>
+          <geometry>
+            <cylinder>
+              <length>0.0030000000000000001</length>
+              <radius>0.0040000000000000001</radius>
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>0 0 1 1</diffuse>
+            <ambient>0 0 1 1</ambient>
+          </material>
+        </visual>
+        <visual name='wrist_3_link_fixed_joint_lump__ccs1_plug_link_visual_3'>
+          <pose>0 0.11 0.1 0 1.570796326794897 -1.570796326794897</pose>
+          <geometry>
+            <mesh>
+              <scale>0.033 0.033 0.033</scale>
+              <uri>file://<urdf-string>/model://ur_simulation_gz/models/ccs2_outlet/ccs1_plug.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='wrist_3_link_fixed_joint_lump__flashlight_link_visual_4'>
+          <pose>0 -0.06 -0.02 0 -1.570796326794897 1.570796326794897</pose>
+          <geometry>
+            <box>
+              <size>0.01 0.01 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <diffuse>0 0 1 1</diffuse>
+            <ambient>0 0 1 1</ambient>
+          </material>
+        </visual>
+        <visual name='wrist_3_link_fixed_joint_lump__flashlight_optical_link_visual_5'>
+          <pose>8.673617379884035e-19 -0.06 -0.015 3.141592653589793 -1.570092458683775e-16 -1.570796326794897</pose>
+          <geometry>
+            <cylinder>
+              <length>0.0030000000000000001</length>
+              <radius>0.0040000000000000001</radius>
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>1 0 0 1</diffuse>
+            <ambient>1 0 0 1</ambient>
+          </material>
+        </visual>
+        <sensor name='rgbd_camera' type='rgbd_camera'>
+          <visualize>true</visualize>
+          <update_rate>60</update_rate>
+          <always_on>true</always_on>
+          <camera>
+            <camera_info_topic>camera/camera_info</camera_info_topic>
+            <image>
+              <format>R8G8B8</format>
+              <width>1920</width>
+              <height>1080</height>
+            </image>
+            <clip>
+              <near>0.050000000000000003</near>
+              <far>5</far>
+            </clip>
+            <vertical_fov>1.089</vertical_fov>
+            <horizontal_fov>1.0469999999999999</horizontal_fov>
+          </camera>
+          <topic>camera</topic>
+          <pose>0 -0.05 -0.02 0 -1.5708 1.5708</pose>
+          <ros>
+            <namespace>/camera</namespace>
+            <publish_tf>true</publish_tf>
+          </ros>
+          <depth_camera>
+            <clip>
+              <near>0.005</near>
+              <far>5.0</far>
+            </clip>
+          </depth_camera>
+          <gz_frame_id>camera_optical_link</gz_frame_id>
+        </sensor>
+        <light name='arm_light' type='spot'>
+          <pose>0 -0.06 -0.015 3.14159 4e-06 -1.5708</pose>
+          <cast_shadows>true</cast_shadows>
+          <intensity>1</intensity>
+          <direction>0 0 0</direction>
+          <diffuse>0.5 0.5 0.5 1</diffuse>
+          <specular>0.1 0.1 0.1 1</specular>
+          <attenuation>
+            <range>10</range>
+            <linear>0.01</linear>
+            <constant>0.5</constant>
+            <quadratic>0.001</quadratic>
+          </attenuation>
+          <spot>
+            <inner_angle>0.59999999999999998</inner_angle>
+            <outer_angle>1</outer_angle>
+            <falloff>0.5</falloff>
+          </spot>
+        </light>
+        <enable_wind>false</enable_wind>
+      </link>
+      <plugin name='gz_ros2_control::GazeboSimROS2ControlPlugin' filename='libgz_ros2_control-system.so'>
+        <parameters>/root/ur16e_test/install/ur_simulation_gz/share/ur_simulation_gz/config/ur_controllers.yaml</parameters>
+        <controller_manager_node_name>controller_manager</controller_manager_node_name>
+      </plugin>
+      <frame name='base_link-base_fixed_joint' attached_to='base_link'>
+        <pose>0 0 0 0 -0 3.14159</pose>
+      </frame>
+      <frame name='base' attached_to='base_link-base_fixed_joint'/>
+      <frame name='base_link-base_link_inertia' attached_to='base_link'>
+        <pose>0 0 0 0 -0 3.14159</pose>
+      </frame>
+      <frame name='base_link_inertia' attached_to='base_link-base_link_inertia'/>
+      <frame name='camera_optical_joint' attached_to='camera_link'>
+        <pose>0.005 0 0 0 1.5708 0</pose>
+      </frame>
+      <frame name='camera_optical_link' attached_to='camera_optical_joint'/>
+      <frame name='camera_joint' attached_to='wrist_3_link'>
+        <pose>0 -0.05 -0.02 1.5708 -1.5708 0</pose>
+      </frame>
+      <frame name='camera_link' attached_to='camera_joint'/>
+      <frame name='ccs1_plug_joint' attached_to='wrist_3_link'>
+        <pose>0 0.11 0.1 1.57 1.57 0</pose>
+      </frame>
+      <frame name='ccs1_plug_link' attached_to='ccs1_plug_joint'/>
+      <frame name='flashlight_optical_joint' attached_to='flashlight_link'>
+        <pose>0.005 0 0 0 -1.5708 0</pose>
+      </frame>
+      <frame name='flashlight_optical_link' attached_to='flashlight_optical_joint'/>
+      <frame name='flashlight_joint' attached_to='wrist_3_link'>
+        <pose>0 -0.06 -0.02 1.5708 -1.5708 0</pose>
+      </frame>
+      <frame name='flashlight_link' attached_to='flashlight_joint'/>
+      <frame name='flange-tool0' attached_to='flange'>
+        <pose>0 0 0 1.5708 -0 1.5708</pose>
+      </frame>
+      <frame name='tool0' attached_to='flange-tool0'/>
+      <frame name='wrist_3-flange' attached_to='wrist_3_link'>
+        <pose>0 0 0 -1.5708 -1.5708 0</pose>
+      </frame>
+      <frame name='flange' attached_to='wrist_3-flange'/>
+      <frame name='wrist_3_link-ft_frame' attached_to='wrist_3_link'>
+        <pose>0 0 0 3.14159 -0 0</pose>
+      </frame>
+      <frame name='ft_frame' attached_to='wrist_3_link-ft_frame'/>
+      <pose>0 0 0.4 0 -0 0</pose>
+      <static>false</static>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='person_walking'>
+      <link name='link'>
+        <inertial>
+          <pose>0 0 0.95 0 -0 0</pose>
+          <mass>80</mass>
+          <inertia>
+            <ixx>27.82</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>24.879999999999999</iyy>
+            <iyz>0</iyz>
+            <izz>4.5700000000000003</izz>
+          </inertia>
+        </inertial>
+        <collision name='bottom'>
+          <pose>0 0 0.01 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.35 0.75 0.02</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <collision name='person'>
+          <pose>0 0 -0.02 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>https://fuel.gazebosim.org/1.0/openrobotics/models/walking person/3/files/meshes/walking.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name='visual'>
+          <pose>0 0 -0.02 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>https://fuel.gazebosim.org/1.0/openrobotics/models/walking person/3/files/meshes/walking.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>-0.111679 1.45839 -0 -0 0 -0</pose>
+      <static>false</static>
+      <self_collide>false</self_collide>
+    </model>
+    <light name='sun' type='directional'>
+      <pose>0 0 10 0 -0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>-0.5 0.1 -0.9</direction>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <linear>0.01</linear>
+        <constant>0.90000000000000002</constant>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+  </world>
+</sdf>

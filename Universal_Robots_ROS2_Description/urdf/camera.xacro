@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <material name="red">
+      <color rgba="1 0 0 1"/>
+    </material>
+    <material name="blue">
+      <color rgba="0 0 1 1"/>
+    </material>
+
+    <joint name="camera_joint" type="fixed">
+        <parent link="wrist_3_link"/>
+        <child link="camera_link"/>
+        <origin xyz="0.0 -0.05 -0.02" rpy="${pi/2} ${-pi/2} 0.0"/>
+    </joint>
+
+    <link name="camera_link">
+        <visual>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+    </link>
+
+    <joint name="camera_optical_joint" type="fixed">
+        <parent link="camera_link"/>
+        <child link="camera_optical_link"/>
+        <origin xyz="0.005 0.0 0.0" rpy="0.0 ${pi/2} 0.0"/>
+    </joint>
+
+    <link name="camera_optical_link">
+        <visual>
+            <geometry>
+                <cylinder length="0.003" radius="0.004"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <!-- <gazebo reference="camera_link">
+        <material> Gazebo/black </material>
+
+        <sensor name="camera" type="camera">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>60</update_rate>
+            <always_on>1</always_on>
+            <camera>
+                <camera_info_topic>camera/camera_info</camera_info_topic> 
+                <vertical_fov>1.3</vertical_fov>
+                <image>
+                    <format>R8G8B8</format>
+                    <width>1920</width>
+                    <height>1080</height>
+                </image>
+                <clip>
+                    <near>0.01</near>
+                    <far>10.0</far>
+                </clip>
+             </camera>   
+             <topic>camera/image_raw</topic>
+             <gz_frame_id>camera_optical_link</gz_frame_id>
+        </sensor>
+    </gazebo> -->
+
+    <gazebo reference="camera_link">
+        <material> Gazebo/black </material>
+
+        <sensor name="rgbd_camera" type="rgbd_camera">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>60</update_rate>
+            <always_on>1</always_on>
+            <ros>
+                <namespace>/camera</namespace>
+                <publish_tf>true</publish_tf>
+            </ros>
+            <camera>
+                <camera_info_topic>camera/camera_info</camera_info_topic> 
+                <vertical_fov>1.089</vertical_fov>
+                <image>
+                    <format>R8G8B8</format>
+                    <width>1920</width>
+                    <height>1080</height>
+                </image>
+                <clip>
+                    <near>0.05</near>
+                    <far>5.0</far>
+                </clip>
+             </camera>   
+             <depth_camera>
+                <clip>
+                    <near>0.005</near>
+                    <far>5.0</far>
+                </clip>
+            </depth_camera>
+            <topic>camera</topic>
+            <!-- <depth_topic>camera/depth/image_raw</depth_topic>
+            <point_cloud_topic>camera/depth/points</point_cloud_topic> -->
+            <gz_frame_id>camera_optical_link</gz_frame_id>
+        </sensor>
+    </gazebo>
+
+    <joint name="flashlight_joint" type="fixed">
+        <parent link="wrist_3_link"/>
+        <child link="flashlight_link"/>
+        <origin xyz="0.0 -0.06 -0.02" rpy="${pi/2} ${-pi/2} 0.0"/>
+    </joint>
+
+    <link name="flashlight_link">
+        <visual>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+
+    <joint name="flashlight_optical_joint" type="fixed">
+        <parent link="flashlight_link"/>
+        <child link="flashlight_optical_link"/>
+        <origin xyz="0.005 0.0 0.0" rpy="0.0 ${-pi/2} 0.0"/>
+    </joint>
+
+    <link name="flashlight_optical_link">
+        <visual>
+            <geometry>
+                <cylinder length="0.003" radius="0.004"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+    </link>
+
+    <gazebo reference="flashlight_optical_link">
+        <light type="spot" name="arm_light">
+            <pose>0 0 0 0 0 0</pose>  <!-- Relative to the link -->
+            <diffuse>0.5 0.5 0.5 1</diffuse>  <!-- grey light -->
+            <specular>0.1 0.1 0.1 1</specular>
+            <attenuation>
+                <range>10</range>
+                <constant>0.5</constant>
+                <linear>0.01</linear>
+                <quadratic>0.001</quadratic>
+            </attenuation>
+            <direction>0 0 0</direction> 
+            <spot>
+                <inner_angle>0.6</inner_angle>
+                <outer_angle>1.0</outer_angle>
+                <falloff>0.5</falloff>
+            </spot>
+            <cast_shadows>true</cast_shadows>
+            <visualize>false</visualize> <!-- Remove the green helper lines -->
+        </light>
+    </gazebo>
+
+
+    <joint name="ccs1_plug_joint" type="fixed">
+        <parent link="wrist_3_link"/>
+        <child link="ccs1_plug_link"/>
+        <origin xyz="0.0 0.11 0.1" rpy="1.57 1.57 0.0"/>
+    </joint>
+
+    <link name="ccs1_plug_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://ccs2_outlet/ccs1_plug.dae" scale="0.033 0.033 0.033"/>
+                <!-- <mesh filename="model://ccs2_outlet" scale="0.033 0.033 0.033"/> -->
+            </geometry>
+        </visual>
+        
+        <!-- <collision>
+            <geometry>
+                Reference your .dae file for collision geometry as well
+                <mesh filename="package://ur_simulation_gz/models/ccs2_outlet/ccs1_plug.dae" scale="0.025 0.025 0.025"/>
+            </geometry>
+        </collision> -->
+
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+        </inertial>
+    </link>
+
+</robot>

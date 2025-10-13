@@ -1,0 +1,29 @@
+idle_pos:
+  joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+  points:
+    - positions: [0.0, -1.57, -2.8, -1.57, 0.0, 0.0]
+      time_from_start: 2.0
+
+start_pos:
+  joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+  points:
+    - positions: [0.0, -1.57, -1.57, 0.0, 1.57, 0.0]
+      time_from_start: 2.0
+
+plug_pos:
+  joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+  points:
+    - positions: [0.0, -2.3562, -0.7854, 0.0, 1.57, 0.0]
+      time_from_start: 2.0
+
+extend_up_max_pos:
+  joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+  points:
+    - positions: [0.0, -1.57, 0.0, -1.57, 0.0, 0.0]
+      time_from_start: 2.0
+
+home_pos:
+  joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+  points:
+    - positions: [0.0, -0.7854, -2.3562, 0.0, 1.57, 0.0]
+      time_from_start: 2.0

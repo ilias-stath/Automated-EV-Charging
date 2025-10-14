@@ -98,7 +98,6 @@ class YoloDetector(Node):
 
             print("\n\n")
             self.get_logger().info(f"Finding goal position....")
-            # rvec = [0.0, 0.0, 0.0]
 
 
             tol = 40
@@ -110,11 +109,6 @@ class YoloDetector(Node):
 
             height, width, _ = self.frame.shape
             self.get_logger().info(f"Frame:  height -> {height}px , width -> {width}px")
-
-
-            # Center of frame
-            # frame_cx = width // 2
-            # frame_cy = height // 2
 
             # Stage 1: Detect inlet
             inlet_results = self.model_inlet(self.frame, verbose=False)
@@ -216,22 +210,9 @@ class YoloDetector(Node):
                                 cv2.circle(annotated, (cx, cy), 5, (0, 255, 0), -1)
                                 self.get_logger().info(f"DC port center at ({cx, cy}) px")
 
-                        # if angleZ > 1.0 or angleZ < -1.0:
-                        #     angleZ_rad = math.radians(angleZ)
-                        #     self.get_logger().info("Rotation in the x axis required before moving!!")
-                        #     self.get_logger().info(f"Anglez in radians: {angleZ_rad:.2f}")
-                        #     # pair = [0.0,0.0,0.0,0.0,angleZ_rad,0.0,0.0,0.0]
-                        #     # self.inlets.append(pair)
-                        #     # self.points.clear()
-                        #     # port_centers.clear()
-
                         if len(port_centers) == 2:
 
-                            # print(port_centers)
-
                             sorted_ports = sorted(port_centers, key=lambda p: p[0])
-
-                            # print(sorted_ports)
 
                             # Now, build the final list of 2D points in the correct, fixed order
                             self.points.clear()
@@ -283,7 +264,6 @@ class YoloDetector(Node):
                                 mid_up_x = mid_x
                                 mid_up_y = mid_y - pixel_offset
                                 cv2.circle(annotated, (mid_up_x, mid_up_y), 6, (255, 0, 0), -1)
-                                # self.points.append((mid_up_x, mid_up_y))
                                 self.get_logger().info(f"Midpoint up at ({mid_up_x, mid_up_y}) px")
 
                                 pixel_offset = int(self.port_to_center_dist / mm_per_pixel)
@@ -296,19 +276,6 @@ class YoloDetector(Node):
                                 cv2.circle(annotated, (inlet_center_x, inlet_center_y), 6, (0, 0, 255), -1)
                                 cv2.putText(annotated, "Inlet Center", (inlet_center_x + 10, inlet_center_y),
                                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-                            
-                            # rvec_raw , tvec_raw = self.get_inlet_pose_pnp(self.points)
-                            # self.get_logger().info(f"\n\rvec -> {rvec_raw}  ,  tvec -> {tvec_raw}.")
-                            # rvec = rvec_raw.flatten()
-                            # tvec = tvec_raw.flatten()
-
-                            # dx_pixel = inlet_center_x - frame_cx
-                            # dy_pixel = inlet_center_y - frame_cy
-                            # pixel_distance = (dx_pixel*dx_pixel + dy_pixel*dy_pixel) ** 0.5
-
-                            # dx_meter = (dx_pixel*mm_per_pixel) / 1000.0
-                            # dy_meter = (dy_pixel*mm_per_pixel) / 1000.0
-                            # meter_distance = (pixel_distance*mm_per_pixel) / 1000.0
 
                         elif shape_center_x != 0.0 and shape_center_y != 0.0:
 
@@ -327,14 +294,6 @@ class YoloDetector(Node):
                             inlet_center_x = (x1t + x2t) // 2
                             inlet_center_y = (y1t + y2t) // 2
 
-                            # port_pixel_width = x2t - x1t
-                            # port_pixel_lenght = y2t - y1t
-
-                            # mm_per_pixel_width = port_width / port_pixel_width
-                            # mm_per_pixel_length = port_lenght / port_pixel_lenght
-
-                            # mm_per_pixel = (mm_per_pixel_width + mm_per_pixel_length) / 2
-
                             self.get_logger().info(f"Only inlet detected. Using bounding box center at ({inlet_center_x}, {inlet_center_y})px as goal.")
                             
                             self.points.append((inlet_center_x, inlet_center_y))
@@ -342,14 +301,7 @@ class YoloDetector(Node):
                             cv2.circle(annotated, (inlet_center_x, inlet_center_y), 6, (0, 0, 255), -1)
                             cv2.putText(annotated, "Inlet Center", (inlet_center_x + 10, inlet_center_y),
                                                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-                            
-                            # dx_pixel = inlet_center_x - frame_cx
-                            # dy_pixel = inlet_center_y - frame_cy
-                            # pixel_distance = (dx_pixel*dx_pixel + dy_pixel*dy_pixel) ** 0.5
 
-                            # dx_meter = (dx_pixel*mm_per_pixel) / 1000.0
-                            # dy_meter = (dy_pixel*mm_per_pixel) / 1000.0
-                            # meter_distance = (pixel_distance*mm_per_pixel) / 1000.0
                         if len(self.points) > 0:
                             self.pub = True
                             self.get_logger().info(f" Points -> {self.points}")
@@ -365,110 +317,86 @@ class YoloDetector(Node):
                             x, y, z = 0.0, 0.0, 0.0
 
 
-                            # if angleZ > 0.5 or angleZ < -0.5:
-                            if False: #For now it is off
-                                x22 = (inlet_center_x + inlet_height/2)*math.cos(abs(angleZ_rad)) + (inlet_center_y + inlet_height/2)*math.sin(abs(angleZ_rad))
-                                y22 = (inlet_center_y)*math.cos(abs(angleZ_rad)) + (inlet_center_x)*math.sin(abs(angleZ_rad))
-                                x33 = (inlet_center_x)*math.cos(abs(angleZ_rad)) + (inlet_center_y)*math.sin(abs(angleZ_rad))
-                                y33 = (inlet_center_y + inlet_width/2)*math.cos(abs(angleZ_rad)) + (inlet_center_x + inlet_width/2)*math.sin(abs(angleZ_rad))
-                                self.get_logger().info(f"x2 -> {x22}  ,  y2 -> {y22} ")
-                                self.get_logger().info(f"x3 -> {x33}  ,  y2 -> {y33} ")
-                                cv2.circle(annotated, (int(x22), int(y22)), 6, (0, 0, 255), -1)
-                                cv2.putText(annotated, "(x2,y2)", (int(x22) + 10, int(y22)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-                                cv2.circle(annotated, (int(x33), int(y33)), 6, (0, 0, 255), -1)
-                                cv2.putText(annotated, "(x33,y33)", (int(x33) + 10, int(y33)),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
-                                                    
+                            # First find tilts
+                            # Iterate for every 5 rows in bounding box
+                            av_row.clear()
+                            for row in range(y1+20,y2-20,5):
+                                rowAvX = 10.0
+                                rowAvZ = 10.0
+                                rowAvY = 10.0
 
+                                # Iterate for every col in bounding box that is close to the center
+                                for col in range(inlet_center_x-5,inlet_center_x+5,1):
+                                    linear_index = row * cloud_width + col
+                                    if linear_index < points_xyz.shape[0]:
+                                        point = points_xyz[linear_index]
+                                        x = float(point[0])
+                                        y = float(point[1])
+                                        z = float(point[2])
+                                        if rowAvX > x:
+                                            rowAvX = x
+                                            rowAvY = y
+                                            rowAvZ = z
+
+                                    else:
+                                        self.get_logger().info(f"Pixel ({col}, {row}) is outside the point cloud dimensions or has no valid point.")
+                                        
+                                pair = [rowAvX,rowAvY,rowAvZ]
+                                av_row.append(pair)
+
+                            # Get angles for x and y
+                            angleX_rad = self.find_orientation_x(av_row)
+                            av_row.clear()
+
+
+                            for col in range(x1+40,x2-40,5):
+                                rowAvX = 10.0
+                                rowAvZ = 10.0
+                                rowAvY = 10.0
+
+                                # Iterate for every col in bounding box that is close to the center
+                                for row in range(inlet_center_y-5,inlet_center_y+5,1):
+                                    linear_index = row * cloud_width + col
+                                    if linear_index < points_xyz.shape[0]:
+                                        point = points_xyz[linear_index]
+                                        x = float(point[0])
+                                        y = float(point[1])
+                                        z = float(point[2])
+                                        if rowAvX > x:
+                                            rowAvX = x
+                                            rowAvY = y
+                                            rowAvZ = z
+                                    else:
+                                        self.get_logger().info(f"Pixel ({col}, {row}) is outside the point cloud dimensions or has no valid point.")
+
+                                pair = [rowAvX,rowAvY,rowAvZ]
+                                av_row.append(pair)
+
+                            angleY_rad = self.find_orientation_y(av_row)
+                            av_row.clear()
+
+
+                        self.get_logger().info(f"angleX_rad = {angleX_rad}  ,  angleY_rad = {angleY_rad}")
+                        
+                        # Then find center etc
+                        for target_col,target_row in self.points:
+                            linear_index = target_row * cloud_width + target_col
+                            if linear_index < points_xyz.shape[0]:
+                                point = points_xyz[linear_index]
+                                x = float(point[0])
+                                y = float(point[1])
+                                z = float(point[2])
+                                if target_col == inlet_center_x and target_row == inlet_center_y:
+                                    point = np.array([x, y, z])
+                                    dist = np.linalg.norm(point)
+                                    if dist < 1.2:
+                                        pair = [x,y,z,angleX_rad,angleY_rad,angleZ_rad,0.0,dist]
+                                        self.inlets.append(pair)
+                                        self.get_logger().info(f"Placed inlet center of pixel ({target_col}, {target_row}) and of 3D location ({x:.4f} m, {y:.4f} m, {z:.4f} m) at list!")
+
+                                self.get_logger().info(f"Found pixel point ({target_col}, {target_row}) at 3D location: ({x:.4f} m, {y:.4f} m, {z:.4f} m)")
                             else:
-                                # First find tilts
-                                # Iterate for every 5 rows in bounding box
-                                av_row.clear()
-                                for row in range(y1+20,y2-20,5):
-                                    rowAvX = 10.0
-                                    rowAvZ = 10.0
-                                    rowAvY = 10.0
-                                    # index = 0
-                                    # Iterate for every col in bounding box that is close to the center
-                                    for col in range(inlet_center_x-5,inlet_center_x+5,1):
-                                        linear_index = row * cloud_width + col
-                                        if linear_index < points_xyz.shape[0]:
-                                            point = points_xyz[linear_index]
-                                            x = float(point[0])
-                                            y = float(point[1])
-                                            z = float(point[2])
-                                            if rowAvX > x:
-                                                rowAvX = x
-                                                rowAvY = y
-                                                rowAvZ = z
-                                            # index += 1
-                                            # self.get_logger().info(f"Pixel ({col}, {row}) at dist -> {x}.")
-                                        else:
-                                            self.get_logger().info(f"Pixel ({col}, {row}) is outside the point cloud dimensions or has no valid point.")
-                                    # rowAvX = rowAvX/index
-                                    # self.get_logger().info(f"row = {row}  ,  rowAvX = {rowAvX}  ,  rowAvY = {rowAvY}  ,  rowAvZ = {rowAvZ}")
-                                    pair = [rowAvX,rowAvY,rowAvZ]
-                                    av_row.append(pair)
-                                    
-
-                                    # input("Press Enter to continue to the next row...")
-
-                                # Get angles for x and y
-                                angleX_rad = self.find_orientation_x(av_row)
-                                av_row.clear()
-
-
-                                for col in range(x1+40,x2-40,5):
-                                    rowAvX = 10.0
-                                    rowAvZ = 10.0
-                                    rowAvY = 10.0
-                                    # index = 0
-                                    # Iterate for every col in bounding box that is close to the center
-                                    for row in range(inlet_center_y-5,inlet_center_y+5,1):
-                                        linear_index = row * cloud_width + col
-                                        if linear_index < points_xyz.shape[0]:
-                                            point = points_xyz[linear_index]
-                                            x = float(point[0])
-                                            y = float(point[1])
-                                            z = float(point[2])
-                                            if rowAvX > x:
-                                                rowAvX = x
-                                                rowAvY = y
-                                                rowAvZ = z
-                                            # index += 1
-                                            # self.get_logger().info(f"Pixel ({col}, {row}) at dist -> {x}.")
-                                        else:
-                                            self.get_logger().info(f"Pixel ({col}, {row}) is outside the point cloud dimensions or has no valid point.")
-                                    # rowAvX = rowAvX/index
-                                    # self.get_logger().info(f"row = {col}  ,  rowAvX = {rowAvX}  ,  rowAvY = {rowAvY}  ,  rowAvZ = {rowAvZ}")
-                                    pair = [rowAvX,rowAvY,rowAvZ]
-                                    av_row.append(pair)
-
-                                angleY_rad = self.find_orientation_y(av_row)
-                                av_row.clear()
-
-
-                            self.get_logger().info(f"angleX_rad = {angleX_rad}  ,  angleY_rad = {angleY_rad}")
-                            # self.get_logger().info(f"angleX_rad = {angleX_rad}  ,  angleY_rad = {angleY_rad}")
-                            
-                            # Then find center etc
-                            for target_col,target_row in self.points:
-                                linear_index = target_row * cloud_width + target_col
-                                if linear_index < points_xyz.shape[0]:
-                                    point = points_xyz[linear_index]
-                                    x = float(point[0])
-                                    y = float(point[1])
-                                    z = float(point[2])
-                                    if target_col == inlet_center_x and target_row == inlet_center_y:
-                                        point = np.array([x, y, z])
-                                        dist = np.linalg.norm(point)
-                                        if dist < 1.2:
-                                            pair = [x,y,z,angleX_rad,angleY_rad,angleZ_rad,0.0,dist]
-                                            self.inlets.append(pair)
-                                            self.get_logger().info(f"Placed inlet center of pixel ({target_col}, {target_row}) and of 3D location ({x:.4f} m, {y:.4f} m, {z:.4f} m) at list!")
-
-                                    self.get_logger().info(f"Found pixel point ({target_col}, {target_row}) at 3D location: ({x:.4f} m, {y:.4f} m, {z:.4f} m)")
-                                else:
-                                    self.get_logger().info(f"Pixel ({target_col}, {target_row}) is outside the point cloud dimensions or has no valid point.")
+                                self.get_logger().info(f"Pixel ({target_col}, {target_row}) is outside the point cloud dimensions or has no valid point.")
 
                         
                         
@@ -485,7 +413,7 @@ class YoloDetector(Node):
                     pose_msg = Pose()
                     pose_msg.position.x = -1*x
                     pose_msg.position.y = -y
-                    pose_msg.position.z = -z #+ 0.05  
+                    pose_msg.position.z = -z 
                     pose_msg.orientation.x = qx
                     pose_msg.orientation.y = -qy
                     pose_msg.orientation.z = qz
@@ -493,9 +421,6 @@ class YoloDetector(Node):
 
                     self.goal_pub.publish(pose_msg)
                     self.get_logger().info("Published goal to /movement/goal")
-
-                    # print(f"Offset X: {dx_pixel} px  ,  Offset Y: {dy_pixel} px  ,  Distance: {pixel_distance:.2f} px")
-                    # print(f"Offset X: {dx_meter:.4f} m  ,  Offset Y: {dy_meter:.4f} m  ,  Distance: {meter_distance:.4f} m")
 
                 # Add a delay to be sure that goals are received
                 self.get_logger().info("Waiting 2 seconds before publishing 'sent' status...")
@@ -536,40 +461,6 @@ class YoloDetector(Node):
     def listener_callback(self, data):
         # self.frame = self.br.imgmsg_to_cv2(data, desired_encoding='bgr8')
         self.frame = self.ros_image_to_cv2(data)
-
-
-
-    # def get_inlet_pose_pnp(self, image_points):
-
-    #     if len(image_points) < 4:
-    #         self.get_logger().error("PnP requires at least 4 points to solve for pose.")
-    #         return None, None
-
-    #     # Ensure points are numpy arrays of the correct type
-    #     obj_points = self.inlet_3d_points
-    #     img_points = np.array(image_points, dtype=np.float32)
-
-    #     try:
-    #         # Solve PnP
-    #         success, rvec, tvec = cv2.solvePnP(obj_points, img_points, self.camera_matrix, self.dist_coeffs)
-            
-    #         if success:
-    #             self.get_logger().info("PnP solved successfully.")
-    #             return rvec, tvec
-    #         else:
-    #             self.get_logger().error("PnP failed to find a valid pose.")
-    #             return None, None
-
-    #     except cv2.error as e:
-    #         self.get_logger().error(f"OpenCV PnP error: {e}")
-    #         return None, None
-
-
-    # def is_contained_in(self, box_a, box_b):
-    #     """Checks if box_a is completely contained within box_b."""
-    #     x1_a, y1_a, x2_a, y2_a = box_a
-    #     x1_b, y1_b, x2_b, y2_b = box_b
-    #     return (x1_a >= x1_b and y1_a >= y1_b and x2_a <= x2_b and y2_a <= y2_b)
 
     def ros_image_to_cv2(self, msg):
         # If it's already a NumPy array, return as-is
@@ -668,22 +559,10 @@ class YoloDetector(Node):
 
 
     def find_orientation_x(self,rowAv):
-        # last = len(rowAv) - 1
         a = 0.0
         b = 0.0
         c = 0.0
         th = 0.0
-        # count = 0
-        
-        # # Check for consistency in the first and last 5 values to get better results and avoid errors 
-        # for i in range(1,6):
-        #     if(rowAv[0][0] > rowAv[0][len-1]):
-        #         if(rowAv[0][0] < rowAv[0][i]):
-        #             count = count + 1
-        #         else:
-        #             count = 0
-        #     else:
-
 
         # I basically create a triangle from known values to get the angle
         print(f"\n\nrowAv[-1][0] -> {rowAv[-1][0]}  ,  rowAv[0][0]-> {rowAv[0][0]}  ,  rowAv[-1][2] -> {rowAv[-1][2]}  ,  rowAv[0][2] -> {rowAv[0][2]}\n\n")
@@ -700,22 +579,10 @@ class YoloDetector(Node):
     
     
     def find_orientation_y(self,rowAv):
-        # last = len(rowAv) - 1
         a = 0.0
         b = 0.0
         c = 0.0
         th = 0.0
-        # count = 0
-        
-        # # Check for consistency in the first and last 5 values to get better results and avoid errors 
-        # for i in range(1,6):
-        #     if(rowAv[0][0] > rowAv[0][len-1]):
-        #         if(rowAv[0][0] < rowAv[0][i]):
-        #             count = count + 1
-        #         else:
-        #             count = 0
-        #     else:
-
 
         # I basically create a triangle from known values to get the angle
         print(f"\n\nrowAv[-1][0] -> {rowAv[-1][0]}  ,  rowAv[0][0]-> {rowAv[0][0]}  ,  rowAv[-1][1] -> {rowAv[-1][1]}  ,  rowAv[0][1] -> {rowAv[0][1]}\n\n")
@@ -730,11 +597,6 @@ class YoloDetector(Node):
 
         return th
 
-
-
-
-
-            
 
 
             

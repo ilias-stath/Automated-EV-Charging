@@ -19,4 +19,5 @@ https://github.com/ilias-stath/Automated-EV-Charging/tree/main
 ```
 pip install -r requirements.txt
 ```
-* Some other 
+* Some other installations that you might need to do are the following
+  

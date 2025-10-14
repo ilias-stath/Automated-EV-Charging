@@ -27,7 +27,7 @@ git clone https://github.com/ilias-stath/Automated-EV-Charging.git
 ```
 pip install -r requirements.txt
 ```
-* After that install also this libraries:
+* After that, you must also install these libraries:
 ```
 sudo apt install \
   ros-humble-filters \

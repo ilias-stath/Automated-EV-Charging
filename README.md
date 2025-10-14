@@ -6,12 +6,11 @@ The project was compiled in ros2 humble using python3.10.
 You must install the specific requirement of the project in order to run correctly.
 
 ## Getting started
-You can download the project using the git clone command.
-
+* Download the project using the git clone command.
 ```
-pip install -r requirements.txt
+https://github.com/ilias-stath/Automated-EV-Charging/tree/main
 ```
-
+* After that install the specific requirements
 ```
 pip install -r requirements.txt
 ```

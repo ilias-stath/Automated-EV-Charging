@@ -21,7 +21,7 @@ You must install the specific requirement of the project in order to run correct
 ## Getting started
 * Download the project using the git clone command.
 ```
-https://github.com/ilias-stath/Automated-EV-Charging/tree/main
+git clone https://github.com/ilias-stath/Automated-EV-Charging.git
 ```
 * After that install the specific requirements
 ```

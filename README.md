@@ -7,7 +7,9 @@ After that it takes the neccesairy steps to approach the inlet and begin the cha
 When the charging is complete it returns to its original location and the proccess can begin again.
 
 <img width="1684" height="948" alt="Screenshot from 2025-10-13 22-35-40" src="https://github.com/user-attachments/assets/fd1f2ccb-93a4-463f-a72f-247dfa0f10b3" />
-![charging_procedure](https://github.com/user-attachments/assets/de89eef9-21f0-48b5-b7ad-6ee6cd4595e9)
+
+![charging_procedure](https://github.com/user-attachments/assets/9d590b2d-2743-4ff1-a864-6b38f613ed35)
+
 
 
 

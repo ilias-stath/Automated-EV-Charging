@@ -38,24 +38,6 @@ class YoloDetector(Node):
         self.midpoint_up = self.inlet_inside_lenght + self.ports_up_midle_to_ports_up_top - self.port_to_top_dist - self.port_to_bottom_dist
         self.midpoint_up_from_center =  self.midpoint_up - self.port_to_center_dist
 
-        # #--- PnP and Camera Calibration Variables ---
-        # self.camera_matrix = np.array([
-        #     [277.0,   0.0, 160.0],
-        #     [0.0, 277.0, 120.0],
-        #     [0.0,   0.0,   1.0]
-        # ], dtype=np.float32)
-        # self.dist_coeffs = np.array([0.0, 0.0, 0.0, 0.0, 0.0], dtype=np.float32)
-
-        # self.inlet_3d_points = np.array([
-        #     [-self.port_dist/2, -self.port_to_center_dist, 0.0],  # DC Port left 
-        #     [self.port_dist/2, -self.port_to_center_dist, 0.0],  # DC Port right 
-        #     [0.0, -self.port_to_center_dist, 0.0], #Midpoint (Midle of inlet between 2 dc ports)
-        #     # [0.0, self.midpoint_up_from_center, 0.0], #Midpoint up (Middle of inlet above all ports, center of 2 top ports)
-        #     [0.0, 0.0, 0.0]  # Inlet Center
-        # ], dtype=np.float32)
-
-        # print(self.inlet_3d_points)
-
 
         # Subscribing to the image topic
         self.get_logger().info("Subscribing to /camera/image....")

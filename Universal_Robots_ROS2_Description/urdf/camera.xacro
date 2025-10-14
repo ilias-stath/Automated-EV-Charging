@@ -38,32 +38,6 @@
         </visual>
     </link>
 
-    <!-- <gazebo reference="camera_link">
-        <material> Gazebo/black </material>
-
-        <sensor name="camera" type="camera">
-            <pose> 0 0 0 0 0 0 </pose>
-            <visualize>true</visualize>
-            <update_rate>60</update_rate>
-            <always_on>1</always_on>
-            <camera>
-                <camera_info_topic>camera/camera_info</camera_info_topic> 
-                <vertical_fov>1.3</vertical_fov>
-                <image>
-                    <format>R8G8B8</format>
-                    <width>1920</width>
-                    <height>1080</height>
-                </image>
-                <clip>
-                    <near>0.01</near>
-                    <far>10.0</far>
-                </clip>
-             </camera>   
-             <topic>camera/image_raw</topic>
-             <gz_frame_id>camera_optical_link</gz_frame_id>
-        </sensor>
-    </gazebo> -->
-
     <gazebo reference="camera_link">
         <material> Gazebo/black </material>
 
@@ -96,8 +70,6 @@
                 </clip>
             </depth_camera>
             <topic>camera</topic>
-            <!-- <depth_topic>camera/depth/image_raw</depth_topic>
-            <point_cloud_topic>camera/depth/points</point_cloud_topic> -->
             <gz_frame_id>camera_optical_link</gz_frame_id>
         </sensor>
     </gazebo>
@@ -168,13 +140,6 @@
                 <!-- <mesh filename="model://ccs2_outlet" scale="0.033 0.033 0.033"/> -->
             </geometry>
         </visual>
-        
-        <!-- <collision>
-            <geometry>
-                Reference your .dae file for collision geometry as well
-                <mesh filename="package://ur_simulation_gz/models/ccs2_outlet/ccs1_plug.dae" scale="0.025 0.025 0.025"/>
-            </geometry>
-        </collision> -->
 
         <inertial>
             <mass value="0.1"/>

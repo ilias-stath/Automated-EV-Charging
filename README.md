@@ -23,16 +23,11 @@ You must install the specific requirement of the project in order to run correct
 ```
 git clone https://github.com/ilias-stath/Automated-EV-Charging.git
 ```
-* After that install the specific requirements
+* Then install the specific requirements:
 ```
 pip install -r requirements.txt
 ```
-* Some other installations that you might need to do are the following
-Run this command to be sure that everything is correctly installed:
-```
-rosdep install --from-paths src --ignore-src -r -y
-```
-After that install also this libraries:
+* After that install also this libraries:
 ```
 sudo apt install \
   ros-humble-filters \
@@ -47,6 +42,11 @@ sudo apt install \
   ros-humble-joint-trajectory-controller \
   ros-humble-realtime-tools \
   ros-humble-generate-parameter-library
+```
+* Also at the end, before you build, do not forget to run these commands:
+```
+rosdep update
+rosdep install --from-paths src --ignore-src -r -y
 ```
 
 

@@ -106,8 +106,8 @@
 
     <gazebo reference="flashlight_optical_link">
         <light type="spot" name="arm_light">
-            <pose>0 0 0 0 0 0</pose>  <!-- Relative to the link -->
-            <diffuse>0.5 0.5 0.5 1</diffuse>  <!-- grey light -->
+            <pose>0 0 0 0 0 0</pose> 
+            <diffuse>0.5 0.5 0.5 1</diffuse>  
             <specular>0.1 0.1 0.1 1</specular>
             <attenuation>
                 <range>10</range>
@@ -122,7 +122,7 @@
                 <falloff>0.5</falloff>
             </spot>
             <cast_shadows>true</cast_shadows>
-            <visualize>false</visualize> <!-- Remove the green helper lines -->
+            <visualize>false</visualize> 
         </light>
     </gazebo>
 
@@ -137,7 +137,6 @@
         <visual>
             <geometry>
                 <mesh filename="package://ccs2_outlet/ccs1_plug.dae" scale="0.033 0.033 0.033"/>
-                <!-- <mesh filename="model://ccs2_outlet" scale="0.033 0.033 0.033"/> -->
             </geometry>
         </visual>
 

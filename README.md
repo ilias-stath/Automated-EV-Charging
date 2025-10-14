@@ -20,4 +20,23 @@ https://github.com/ilias-stath/Automated-EV-Charging/tree/main
 pip install -r requirements.txt
 ```
 * Some other installations that you might need to do are the following
-  
+Run this command to be sure that everything is correctly installed:
+```
+rosdep install --from-paths src --ignore-src -r -y
+```
+After that install also this libraries:
+```
+sudo apt install \
+  ros-humble-filters \
+  ros-humble-ros2-control \
+  ros-humble-ros2-controllers \
+  ros-humble-controller-interface \
+  ros-humble-hardware-interface \
+  ros-humble-control-toolbox \
+  ros-humble-controller-manager \
+  ros-humble-gz-ros2-control \
+  ros-humble-joint-state-broadcaster \
+  ros-humble-joint-trajectory-controller \
+  ros-humble-realtime-tools \
+  ros-humble-generate-parameter-library
+```

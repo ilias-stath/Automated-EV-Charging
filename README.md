@@ -66,6 +66,7 @@ If you want to view the annotated image with the keypoints created by the model 
 ```
 ros2 run yolo_model image_view
 ```
+Note that the annotated images isn't in a constant feed.
 
 ## Important notes
 

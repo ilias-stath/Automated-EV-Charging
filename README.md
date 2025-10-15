@@ -50,10 +50,9 @@ rosdep install --from-paths src --ignore-src -r -y
 ```
 
 ## Running the example
-**!CAUTION!** Always build and source the enviroment before you launch it!<br>
 In order to run the example and test the procedure you must follow these 2 simple steps.<br>
 
-* Launch the enviroment
+* Launch the simulated enviroment
 ```
 ros2 launch ur_simulation_gz ur_sim_moveit.launch.py
 ```
@@ -68,3 +67,7 @@ If you want to view the annotated image with the keypoints created by the model 
 ros2 run yolo_model image_view
 ```
 
+## Important notes
+
+* Always build and source before you launch or run the nodes
+* Wait until the simulated enviroment is correclt launched before you launch the nodes. One easy way to identify it is to wait until the logs stop.

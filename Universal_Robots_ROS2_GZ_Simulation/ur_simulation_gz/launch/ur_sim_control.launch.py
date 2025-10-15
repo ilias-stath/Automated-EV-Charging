@@ -166,7 +166,6 @@ def launch_setup(context, *args, **kwargs):
             "ur",
             "-allow_renaming",
             "true",
-            # For test_approach
             '-x',
             '0.0',
             '-y',
@@ -179,19 +178,6 @@ def launch_setup(context, *args, **kwargs):
             '0.0',
             '-Y',
             '0.0'
-            # # For EV_scenario
-            # '-x',
-            # '-0.6',
-            # '-y',
-            # '-0.35',
-            # '-z',
-            # '0.4',
-            # '-R',
-            # '0.0',
-            # '-P',
-            # '0.0',
-            # '-Y',
-            # '3.14'
 
         ],
     )
@@ -212,15 +198,6 @@ def launch_setup(context, *args, **kwargs):
         condition=UnlessCondition(gazebo_gui),
     )
 
-    # Make the /clock topic available in ROS
-    # gz_sim_bridge = Node(
-    #     package="ros_gz_bridge",
-    #     executable="parameter_bridge",
-    #     arguments=[
-    #         "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
-    #     ],
-    #     output="screen",
-    # )
 
     bridge_params = PathJoinSubstitution([FindPackageShare("ur_simulation_gz"), 'config', 'gz_bridge.yaml'])
 
@@ -231,46 +208,6 @@ def launch_setup(context, *args, **kwargs):
             {"config_file": bridge_params} # Use parameter dictionary for cleaner YAML loading
         ]
     )
-
-    # # 1. ur_simulation_gz main_logic node
-    # main_logic_node = Node(
-    #     package='ur_simulation_gz',
-    #     executable='main_logic',
-    #     name='main_logic_node',
-    #     output='screen'
-    # )
-
-    # # 2. ur_simulation_gz move_moveit node
-    # move_moveit_node = Node(
-    #     package='ur_simulation_gz',
-    #     executable='move_moveit',
-    #     name='move_moveit_node',
-    #     output='screen'
-    # )
-
-    # # 3. yolo_model yolo_node
-    # yolo_node = Node(
-    #     package='yolo_model',
-    #     executable='yolo_node',
-    #     name='yolo_detection_node',
-    #     output='screen'
-    # )
-
-    # ros_gz_image_bridge = Node(
-    #     package="ros_gz_image",
-    #     executable="image_bridge",
-    #     arguments=["/camera/image_raw"]
-    # )
-
-    # controllers_after_delay = TimerAction(
-    #     period=3.0,
-    #     actions=[
-    #         robot_state_publisher_node,
-    #         joint_state_broadcaster_spawner,
-    #         initial_joint_controller_spawner_started,
-    #         # initial_joint_controller_spawner_stopped,
-    #     ]
-    # )
 
     delay_joint_controller = RegisterEventHandler(
         event_handler=OnProcessExit(
@@ -289,22 +226,6 @@ def launch_setup(context, *args, **kwargs):
         # condition=IfCondition(launch_rviz),
     )
 
-    # node_delay_delay = TimerAction(
-    #     period=15.0,
-    #     actions=[
-    #         move_moveit_node,
-    #         yolo_node,
-    #         main_logic_node
-    #     ]
-    # )
-
-    # node_delay = RegisterEventHandler(
-    #     event_handler=OnProcessExit(
-    #         target_action=initial_joint_controller_spawner_started,
-    #         on_exit=[node_delay_delay]
-    #     )
-    #     # condition=IfCondition(launch_rviz),
-    # )
 
     nodes_to_start = [
         gz_launch_description_with_gui,
@@ -313,10 +234,8 @@ def launch_setup(context, *args, **kwargs):
         robot_state_publisher_node,
         controllers_delay,
         gz_sim_bridge,
-        # ros_gz_image_bridge,
         delay_rviz_after_joint_state_broadcaster_spawner,
         # gz_launch_description_without_gui,
-        # node_delay
     ]
 
     return nodes_to_start
@@ -432,7 +351,6 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "world_file",
-            # default_value=PathJoinSubstitution([FindPackageShare("ur_simulation_gz"), "worlds", "test_approach.sdf"]),
             default_value=PathJoinSubstitution([FindPackageShare("ur_simulation_gz"), "worlds", "EV_scenario.sdf"]),
             description="Gazebo world file (absolute path or filename from the gazebosim worlds collection) containing a custom world.",
         )

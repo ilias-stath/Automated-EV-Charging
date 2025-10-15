@@ -89,17 +89,10 @@ def launch_setup(context, *args, **kwargs):
         actions=[_ur_moveit_launch]
     )
 
-    # moveit_delayed_launch = RegisterEventHandler(
-    #     event_handler=OnProcessExit(
-    #         target_action=ur_control_launch,
-    #         on_exit=[_ur_moveit_launch],
-    #     )
-    # )
-
 
     nodes_to_launch = [
         ur_control_launch,
-        moveit_delayed_launch, # Add the delayed MoveIt launch here
+        moveit_delayed_launch,
     ]
 
     return nodes_to_launch

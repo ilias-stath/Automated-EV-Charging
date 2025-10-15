@@ -49,7 +49,18 @@ rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 ```
 
+## Running the example
+In order to run the example and test the procedure you must follow these 2 simple steps.
+**!CAUTION!** Always build and source the enviroment before you launch it!
 
+* Launch the enviroment
+```
+ros2 launch ur_simulation_gz ur_sim_moveit.launch.py
+```
 
+* Launch the nodes
+```
+ros2 launch ur_simulation_gz EV_charge.launch.py
+```
 
 

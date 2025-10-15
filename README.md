@@ -50,17 +50,21 @@ rosdep install --from-paths src --ignore-src -r -y
 ```
 
 ## Running the example
-In order to run the example and test the procedure you must follow these 2 simple steps.  
-**!CAUTION!** Always build and source the enviroment before you launch it!
+**!CAUTION!** Always build and source the enviroment before you launch it!<br>
+In order to run the example and test the procedure you must follow these 2 simple steps.<br>
 
 * Launch the enviroment
 ```
 ros2 launch ur_simulation_gz ur_sim_moveit.launch.py
 ```
 
-* Launch the nodes
+* Launch the nodes (in a seperate terminal)
 ```
 ros2 launch ur_simulation_gz EV_charge.launch.py
 ```
 
+If you want to view the annotated image with the keypoints created by the model run this in a seperate terminal:
+```
+ros2 run yolo_model image_view
+```
 

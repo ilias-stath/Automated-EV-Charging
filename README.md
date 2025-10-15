@@ -69,5 +69,5 @@ ros2 run yolo_model image_view
 
 ## Important notes
 
-* Always build and source before you launch or run the nodes
+* Always build and source before you launch the simulation or run the nodes
 * Wait until the simulated enviroment is correclt launched before you launch the nodes. One easy way to identify it is to wait until the logs stop.

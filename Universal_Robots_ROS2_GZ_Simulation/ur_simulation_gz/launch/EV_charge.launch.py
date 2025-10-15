@@ -33,9 +33,8 @@ def generate_launch_description():
     )
 
     # Launch order with delays
-    # delayed_yolo_node = TimerAction(period=10.0, actions=[yolo_node_node])
     delayed_move_moveit_node = TimerAction(period=10.0, actions=[move_moveit_node])
-    delayed_main_logic = TimerAction(period=20.0, actions=[main_logic_node])  # 5s after yolo
+    delayed_main_logic = TimerAction(period=20.0, actions=[main_logic_node])  # 5s after move_moveit
 
     return LaunchDescription([
         yolo_node_node,

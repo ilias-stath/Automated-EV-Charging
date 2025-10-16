@@ -21,23 +21,24 @@ You must install the specific requirement of the project in order to run correct
 **Also read the notes at the end of the Readme**
 
 ## Getting started
-* First create the necessary folders
+1. First create the necessary folders
 ```
 mkdir -p ev_charge/src
 ```
-* Download the project inside the src folder using the git clone command.
+2. Download the project inside the src folder using the git clone command.
 ```
 git clone https://github.com/ilias-stath/Automated-EV-Charging.git
 ```
-* Then install the specific requirements:
-```
-pip install -r requirements.txt
-```
-  * If you use a vulcanexus container, then you probably only need this install:
-  ```
-  pip install ultralytics
-  ```
-* After that, you must also install these libraries:
+3. Then install the specific requirements:<br>
+   a. You can install from requirements.txt
+   ```
+   pip install -r requirements.txt
+   ```
+   b. If you use a vulcanexus container, then you probably only need this install:
+   ```
+   pip install ultralytics
+   ```
+4. After that, you must also install these libraries:
 ```
 sudo apt update
 sudo apt install \
@@ -54,26 +55,27 @@ sudo apt install \
   ros-humble-realtime-tools \
   ros-humble-generate-parameter-library
 ```
-* Next run these commands:
+5. Next run these commands:
 ```
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 ```
-* At last, before you build you must export the path correctly so the gazebo fortress can locate the 3d-models
-```
-unset GZ_SIM_RESOURCE_PATH
-nano ~/.bashrc
-# add the export line at the end of the .bashrc
-export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Automated-EV-Charging/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
-source ~/.bashrc
-echo $GZ_SIM_RESOURCE_PATH
-```
-* Alternatively, if you do not want to edit the .bashrc you can just export the paths
-```
-unset GZ_SIM_RESOURCE_PATH
-export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Automated-EV-Charging/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
-echo $GZ_SIM_RESOURCE_PATH
-```
+6. Exports path for gazebo: 
+   a. At last, before you build you must export the path correctly so the gazebo fortress can locate the 3d-models
+   ```
+   unset GZ_SIM_RESOURCE_PATH
+   nano ~/.bashrc
+   # add the export line at the end of the .bashrc
+   export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Automated-EV-Charging/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
+   source ~/.bashrc
+   echo $GZ_SIM_RESOURCE_PATH
+   ```
+   b. Alternatively, if you do not want to edit the .bashrc you can just export the paths
+   ```
+   unset GZ_SIM_RESOURCE_PATH
+   export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Automated-EV-Charging/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
+   echo $GZ_SIM_RESOURCE_PATH
+   ```
 
 ## Running the example
 In order to run the example and test the procedure you must follow these 2 simple steps.<br>

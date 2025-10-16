@@ -3,7 +3,6 @@ from rclpy.node import Node
 from rclpy.duration import Duration
 from sensor_msgs.msg import Image , PointCloud2
 from std_msgs.msg import Header
-# from cv_bridge import CvBridge
 from ultralytics import YOLO
 import cv2
 import os
@@ -24,7 +23,6 @@ class YoloDetector(Node):
         self.frame = None
         self.inlets = []
         self.inlet_boxes = []
-        # self.bridge = CvBridge()
 
         # Values from measurement
         self.port_lenght = 130.0
@@ -79,7 +77,6 @@ class YoloDetector(Node):
         self.model_inlet = YOLO(os.path.join(base_path, 'both_detector.pt'))  # inlet detection model
         self.model_ports = YOLO(os.path.join(base_path, 'dc_detector_better.pt'))  # dc ports detection model
 
-        # self.br = CvBridge()
         self.get_logger().info("YOLO Node Started!")
 
         print("\n\n")
@@ -459,7 +456,6 @@ class YoloDetector(Node):
 
 
     def listener_callback(self, data):
-        # self.frame = self.br.imgmsg_to_cv2(data, desired_encoding='bgr8')
         self.frame = self.ros_image_to_cv2(data)
 
     def ros_image_to_cv2(self, msg):
@@ -533,8 +529,6 @@ class YoloDetector(Node):
                 box = np.intp(box)
                 cv2.circle(image, (center_x, center_y), 6, (0, 0, 255), -1)
                 cv2.drawContours(image, [box], -1, (0, 0, 255), 2)
-                # cv2.imshow('Detected Shape', image)
-                # cv2.waitKey(0)
 
                 # Check if the shape is at the center
                 if abs(center_x - image_center_x) < tolerance and abs(center_y - image_center_y) < tolerance:

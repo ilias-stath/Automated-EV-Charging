@@ -48,7 +48,7 @@ sudo apt install \
 * Also at the end, before you build, do not forget to run these commands:
 ```
 rosdep update
-rosdep install --from-paths src --ignore-src -r -y
+rosdep install --from-paths src --ignore-Automated-EV-Charging -r -y
 ```
 
 ## Running the example

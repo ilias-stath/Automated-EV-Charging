@@ -18,6 +18,7 @@ The project was created in a vulcanexus docker container.<br>
 The project was compiled in ros2 humble using python3.10.<br>
 The simulation was done in gazebo fortress.<br>
 You must install the specific requirement of the project in order to run correctly.
+**Also read the notes at the end of the Readme**
 
 ## Getting started
 * First create the necessary folders
@@ -49,10 +50,25 @@ sudo apt install \
   ros-humble-realtime-tools \
   ros-humble-generate-parameter-library
 ```
-* Also at the end, before you build, do not forget to run these commands:
+* Next run these commands:
 ```
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
+```
+* At last, before you build you must export the path correctly so the gazebo fortress can locate the 3d-models
+```
+unset GZ_SIM_RESOURCE_PATH
+nano ~/.bashrc
+# add the export line at the end of the .bashrc
+export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
+source ~/.bashrc
+echo $GZ_SIM_RESOURCE_PATH
+```
+* Alternatively, if you do not want to edit the .bashrc you can just export the paths
+```
+unset GZ_SIM_RESOURCE_PATH
+export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
+echo $GZ_SIM_RESOURCE_PATH
 ```
 
 ## Running the example
@@ -77,4 +93,13 @@ Note that the annotated images isn't in a constant feed.
 ## Important notes
 
 * Always build and source before you launch the simulation or run the nodes
+* You can edit the .bashrc with nano or vim. To install the just type:
+```
+sudo apt install nano
+```
+or
+```
+sudo apt install vim
+```
+* If you do not add the export line to the .bashrc and just export it, then if you reopen the pc or container you must do it again
 * Wait until the simulated enviroment is correctly launched before you launch the nodes. One easy way to identify it is to wait until the logs stop.

@@ -8,9 +8,6 @@
 #include <optional>
 #include <thread>
 #include <chrono>
-
-// NEW: Include the header for the action cancellation service request type.
-// This header defines the necessary message structure for the cancellation request.
 #include "action_msgs/srv/cancel_goal.hpp"
 
 using namespace std;
@@ -19,8 +16,6 @@ class MainLogic : public rclcpp::Node {
 public:
   using MoveToPose = ur_simulation_gz::action::MoveToPose;
   using GoalHandle = rclcpp_action::ClientGoalHandle<MoveToPose>;
-  // FIX: Directly use the canonical type for the cancellation service request:
-  // action_msgs::srv::CancelGoal::Request. This resolves the 'does not name a type' error.
   using CancelGoalRequest = action_msgs::srv::CancelGoal::Request;
  
   MainLogic() : Node("main_logic") {
@@ -40,7 +35,6 @@ public:
     RCLCPP_INFO(this->get_logger(), "Subscribing to /movement/pose");
     read_pose = this->create_subscription<geometry_msgs::msg::Pose>("/movement/pose",2,std::bind(&MainLogic::pose_callback,this,std::placeholders::_1));
 
-    // NEW: Subscriber for cancellation command
     RCLCPP_INFO(this->get_logger(), "Subscribing to cancellation command: /movement/cancel_command");
     cancel_sub_ = this->create_subscription<std_msgs::msg::String>(
         "/movement/cancel_command", 10,
@@ -217,7 +211,6 @@ private:
           approach_index = 1;
           first = false;
         }else {
-          // RCLCPP_INFO(this->get_logger(), "y->%.4f  ,  z->%.4f",goal_pose.position.y,goal_pose.position.z);
           if ((fabs(goal_pose.position.y) > 0.008 || fabs(goal_pose.position.z) > 0.008)){
             approach_index = 1;
             goal_msg.approach_index = approach_index;
@@ -229,7 +222,6 @@ private:
 
             inlet_position->orientation.x += goal_pose.orientation.x;
             inlet_position->orientation.y += goal_pose.orientation.y;
-            // inlet_position->orientation.z += goal_pose.orientation.z;
 
             RCLCPP_INFO(this->get_logger(), "In case with index 2: qx=%.4f, qy=%.4f, qz=%.4f",goal_pose.orientation.x,goal_pose.orientation.y,goal_pose.orientation.z);
             RCLCPP_INFO(this->get_logger(), "In case with index 2 new inlet orientation: qx=%.4f, qy=%.4f, qz=%.4f",inlet_position->orientation.x,inlet_position->orientation.y,inlet_position->orientation.z);
@@ -308,7 +300,6 @@ private:
 
 
       
-      // RCLCPP_INFO(this->get_logger(), "x = %f  ,  y = %f  ,  z = %f",x,y,z);
       RCLCPP_INFO(this->get_logger(), "approach_index = %d",approach_index);
       if(!skip){
         RCLCPP_INFO(this->get_logger(), "Sending goal to action server");
@@ -359,24 +350,17 @@ private:
   }
 
   void cancel_current_move() {
-    // 1. Check if we have a valid goal handle stored
     if (active_goal_handle_) {
-        // 2. Check the status of the goal before attempting cancellation
         if (active_goal_handle_->get_status() == action_msgs::msg::GoalStatus::STATUS_ACCEPTED || active_goal_handle_->get_status() == action_msgs::msg::GoalStatus::STATUS_EXECUTING) {
             RCLCPP_INFO(this->get_logger(), "Sending cancel request for the active move goal...");
 
-            // FIX: Instead of manually creating the CancelGoalRequest message, pass the 
-            // active goal handle directly to async_cancel_goal. The rclcpp_action library 
-            // handles packaging the goal ID automatically, solving both type conversion errors.
             auto future_cancel = client_->async_cancel_goal(active_goal_handle_);
-
-            // 5. Clear the handle immediately after sending the request. The result callback will handle the final status.
             active_goal_handle_.reset();
             approach_index = 6;
 
         } else {
             RCLCPP_WARN(this->get_logger(), "Cannot cancel: Goal is not in EXECUTING or ACCEPTED status (Current Status: %d).", active_goal_handle_->get_status());
-            active_goal_handle_.reset(); // Clear handle if it's already terminated
+            active_goal_handle_.reset();
         }
     } else {
         RCLCPP_WARN(this->get_logger(), "Cannot cancel: No active goal handle stored.");
@@ -414,8 +398,6 @@ private:
 
   void goal_callback(const geometry_msgs::msg::Pose::SharedPtr msg) {
     bool new_pose = true;
-
-    // if()
 
     if(poses.empty()){
       poses.push_back(*msg);
@@ -466,12 +448,6 @@ private:
     if (msg->data == "sent"){
       goal_sent = true;
     }
-
-    // if (msg->data == "posing"){
-    //  orig_pose = false;
-    //  RCLCPP_INFO(this->get_logger(), "Received status canceling original pose timer....");
-    //  orig_pose_timeout->cancel();
-    // }
   
     RCLCPP_INFO(this->get_logger(), "(From state_callback) State is: %s\n\n\n", msg->data.c_str());
   }
@@ -506,14 +482,12 @@ private:
   }
 
   double calculate_distance_tf2(const geometry_msgs::msg::Point& p1, const geometry_msgs::msg::Point& p2) {
-    // Convert geometry_msgs::msg::Point to tf2::Vector3
     tf2::Vector3 v1;
     tf2::fromMsg(p1, v1);
 
     tf2::Vector3 v2;
     tf2::fromMsg(p2, v2);
-
-    // Use the built-in distance() method
+    
     return v1.distance(v2);
   }
 

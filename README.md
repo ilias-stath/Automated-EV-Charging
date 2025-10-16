@@ -77,4 +77,4 @@ Note that the annotated images isn't in a constant feed.
 ## Important notes
 
 * Always build and source before you launch the simulation or run the nodes
-* Wait until the simulated enviroment is correclt launched before you launch the nodes. One easy way to identify it is to wait until the logs stop.
+* Wait until the simulated enviroment is correctly launched before you launch the nodes. One easy way to identify it is to wait until the logs stop.

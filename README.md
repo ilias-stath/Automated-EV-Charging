@@ -29,6 +29,7 @@ pip install -r requirements.txt
 ```
 * After that, you must also install these libraries:
 ```
+sudo apt update
 sudo apt install \
   ros-humble-filters \
   ros-humble-ros2-control \

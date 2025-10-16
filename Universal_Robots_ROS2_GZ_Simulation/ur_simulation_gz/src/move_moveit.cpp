@@ -13,7 +13,6 @@ public:
   using GoalHandle = rclcpp_action::ServerGoalHandle<MoveToPose>;
   using MoveGroupInterface = moveit::planning_interface::MoveGroupInterface;
 
-  // Constructor
   MoveMoveit() : Node("move_moveit", rclcpp::NodeOptions().use_intra_process_comms(true)) {
     this->set_parameter(rclcpp::Parameter("use_sim_time", true));
 
@@ -71,7 +70,6 @@ private:
     RCLCPP_INFO(this->get_logger(), "Canceling goal and stopping robot.");
     (void)goal_handle;
     
-    // !!! ADD THIS LINE !!!
     if (move_group_interface_) {
       move_group_interface_->stop();
     }
@@ -80,7 +78,6 @@ private:
   }
  
   void handle_accepted(const std::shared_ptr<GoalHandle> goal_handle) {
-    // The action server already runs this in a new thread. No need for an additional thread here.
     std::thread{std::bind(&MoveMoveit::execute, this, goal_handle)}.detach();
   }
  
@@ -99,34 +96,6 @@ private:
     RCLCPP_INFO(this->get_logger(), "Arm at: x=%.4f, y=%.4f, z=%.4f, qx=%.4f, qy=%.4f, qz=%.4f, qw=%.4f",start_pose.position.x,start_pose.position.y,start_pose.position.z,start_pose.orientation.x,start_pose.orientation.y,start_pose.orientation.z,start_pose.orientation.w);
 
 
-
-    // if(goal->qx != 0.0){
-    //   std::cin >> qx;
-    //   tf2::Quaternion q_x_axis_parallel;
-    //   q_x_axis_parallel.setRPY(0, qx, 0); // Roll=0, Pitch=-90deg, Yaw=0 (in radians)
-    //   goal_pose.orientation = tf2::toMsg(q_x_axis_parallel);
-    //   waypoints.push_back(goal_pose);
-
-    // // Create a quaternion from the current end effector orientation.
-    // tf2::Quaternion current_quat;
-    // tf2::fromMsg(start_pose.orientation, current_quat);
-
-    // // Create a new quaternion from the user-provided RPY values.
-    // tf2::Quaternion relative_quat;
-    // relative_quat.setRPY(goal->qx, goal->qy, goal->qz);
-
-    // // Multiply the current quaternion by the relative one to get the new absolute orientation.
-    // tf2::Quaternion target_quat = current_quat * relative_quat;
-    // target_quat.normalize();
-
-    // target_pose1.orientation = tf2::toMsg(target_quat);
-    // goal_pose.orientation = tf2::toMsg(target_quat);
-
-    // From matrix multiplication of Rotational Z-X-Y multiplied by the matrix xyz1.
-    // tempX*(cos(thx)*cos(thz)-sin(thx)*sin(thy)*sin(thz)) - tempY*cos(thy)*sin(thx) + tempZ*(cos(thx)*sin(thz)+cos(thz)*sin(thx)*sin(thy))
-    // tempX*(cos(thz)*sin(thx)+cos(thx)*sin(thy)*sin(thz)) + tempY*cos(thx)*cos(thy) + tempZ*(sin(thx)*sin(thz)-cos(thx)*cos(thz)*sin(thy))
-    // -tempX*cos(thy)*sin(thz) + tempY*sin(thy) + tempZ*cos(thy)*cos(thz)
-
     thx = goal->thz;
     thy = goal->thx;
     thz = goal->thy;
@@ -135,7 +104,6 @@ private:
     tempZ = 0.0;
     
     dx = goal->x - start_pose.position.x;
-    // x = (2*dx)/5;
     x = dx/2;
 
     RCLCPP_INFO(this->get_logger(), "thx = %f",thx);
@@ -190,16 +158,12 @@ private:
 
       // Then allign at y and z
       goal_pose.position.x = x;
-      // goal_pose.position.y += goal->y;
-      // goal_pose.position.z += goal->z;
+
 
       // From Z-X-Y rotation matrix
       tempX = 0.0;
       tempY = goal->y;
       tempZ = goal->z;
-      // goal_pose.position.x += tempX*(cos(thx)*cos(thz)-sin(thx)*sin(thy)*sin(thz)) - tempY*cos(thy)*sin(thx) + tempZ*(cos(thx)*sin(thz)+cos(thz)*sin(thx)*sin(thy));
-      // goal_pose.position.y += tempX*(cos(thz)*sin(thx)+cos(thx)*sin(thy)*sin(thz)) + tempY*cos(thx)*cos(thy) + tempZ*(sin(thx)*sin(thz)-cos(thx)*cos(thz)*sin(thy));
-      // goal_pose.position.z += -tempX*cos(thy)*sin(thz) + tempY*sin(thy) + tempZ*cos(thy)*cos(thz);
 
       // 1. Convert tempX/Y/Z into a tf2::Vector3
       tf2::Vector3 relative_translation(tempY, tempZ, tempX);
@@ -226,14 +190,9 @@ private:
     }else if(goal->approach_index == 1){
 
       // Allign y and z
-      // goal_pose.position.y += goal->y;
-      // goal_pose.position.z += goal->z;
       tempX = 0.0;
       tempY = goal->y;
       tempZ = goal->z;
-      // goal_pose.position.x += tempX*(cos(thx)*cos(thz)-sin(thx)*sin(thy)*sin(thz)) - tempY*cos(thy)*sin(thx) + tempZ*(cos(thx)*sin(thz)+cos(thz)*sin(thx)*sin(thy));
-      // goal_pose.position.y += tempX*(cos(thz)*sin(thx)+cos(thx)*sin(thy)*sin(thz)) + tempY*cos(thx)*cos(thy) + tempZ*(sin(thx)*sin(thz)-cos(thx)*cos(thz)*sin(thy));
-      // goal_pose.position.z += -tempX*cos(thy)*sin(thz) + tempY*sin(thy) + tempZ*cos(thy)*cos(thz);
 
       // Create a quaternion from the current end effector orientation.
       tf2::Quaternion current_quat;
@@ -307,7 +266,6 @@ private:
       tf2::Quaternion target_quat = current_quat * relative_quat;
       target_quat.normalize();
 
-      // target_pose1.orientation = tf2::toMsg(target_quat);
       goal_pose.orientation = tf2::toMsg(target_quat);
 
       RCLCPP_INFO(this->get_logger(), "Computed goal_pose: x=%.4f, y=%.4f, z=%.4f, qx=%.4f, qy=%.4f, qz=%.4f, qw=%.4f",goal_pose.position.x,goal_pose.position.y,goal_pose.position.z,goal_pose.orientation.x,goal_pose.orientation.y,goal_pose.orientation.z,goal_pose.orientation.w);
@@ -316,14 +274,9 @@ private:
       waypoints.push_back(goal_pose);
     }else if (goal->approach_index == 4){
 
-      // target_pose1.position.z += goal->z + 0.02;
       tempX = 0.0;
       tempY = 0.0;
       tempZ = goal->z - 0.1;
-
-      // target_pose1.position.x += tempX*(cos(thx)*cos(thz)-sin(thx)*sin(thy)*sin(thz)) - tempY*cos(thy)*sin(thx) + tempZ*(cos(thx)*sin(thz)+cos(thz)*sin(thx)*sin(thy));
-      // target_pose1.position.y += tempX*(cos(thz)*sin(thx)+cos(thx)*sin(thy)*sin(thz)) + tempY*cos(thx)*cos(thy) + tempZ*(sin(thx)*sin(thz)-cos(thx)*cos(thz)*sin(thy));
-      // target_pose1.position.z += -tempX*cos(thy)*sin(thz) + tempY*sin(thy) + tempZ*cos(thy)*cos(thz);
 
       // Create a quaternion from the current end effector orientation.
       tf2::Quaternion current_quat;
@@ -349,14 +302,6 @@ private:
       tempY = 0.0;
       tempZ = 0.0;
 
-      // goal_pose.position.x += tempX*(cos(thx)*cos(thz)-sin(thx)*sin(thy)*sin(thz)) - tempY*cos(thy)*sin(thx) + tempZ*(cos(thx)*sin(thz)+cos(thz)*sin(thx)*sin(thy));
-      // goal_pose.position.y += tempX*(cos(thz)*sin(thx)+cos(thx)*sin(thy)*sin(thz)) + tempY*cos(thx)*cos(thy) + tempZ*(sin(thx)*sin(thz)-cos(thx)*cos(thz)*sin(thy));
-      // goal_pose.position.z += -tempX*cos(thy)*sin(thz) + tempY*sin(thy) + tempZ*cos(thy)*cos(thz);
-
-      // // Create a quaternion from the current end effector orientation.
-      // tf2::Quaternion current_quat;
-      // tf2::fromMsg(start_pose.orientation, current_quat);
-
       // 1. Convert tempX/Y/Z into a tf2::Vector3
       relative_translation = tf2::Vector3(tempY, tempZ, tempX); 
 
@@ -381,7 +326,6 @@ private:
 
       target_pose1.position.x += x;
 
-      // goal_pose.position.x += goal->x + 0.1;
       target_pose2.position = target_pose1.position;
       target_pose2.orientation.x = goal->qx;
       target_pose2.orientation.y = goal->qy;
@@ -460,7 +404,6 @@ private:
     }
   }
 
-  // New method to handle pose retrieval and publishing in a separate thread.
   void pose_send_thread(){
     RCLCPP_INFO(this->get_logger(), "Waiting for robot state to be received...");
     rclcpp::sleep_for(std::chrono::seconds(2));
@@ -474,7 +417,6 @@ private:
         current_pose.orientation.x, current_pose.orientation.y, current_pose.orientation.z, current_pose.orientation.w);
   }
 
-  // This function is now the direct callback for status messages.
   void status_callback(const std_msgs::msg::String::SharedPtr msg){
     if(msg->data == "pose"){
       RCLCPP_INFO(this->get_logger(), "Received 'pose' request. Launching pose retrieval in a new thread.");
@@ -491,9 +433,7 @@ int main(int argc, char **argv) {
   
   // Call the initialize method after the shared pointer is created
   node->initialize();
-  // std::thread turn_thread(&MoveMoveit::turn, node);
-  // turn_thread.detach();
-
+  
   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;

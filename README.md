@@ -20,6 +20,10 @@ The simulation was done in gazebo fortress.<br>
 You must install the specific requirement of the project in order to run correctly.
 
 ## Getting started
+* First create the necessary folders
+```
+mkdir -p ev_charge/src
+```
 * Download the project using the git clone command.
 ```
 git clone https://github.com/ilias-stath/Automated-EV-Charging.git

@@ -17,7 +17,7 @@ When the charging is complete it returns to its original location and the procce
 The project was created in a vulcanexus docker container.<br>
 The project was compiled in ros2 humble using python3.10.<br>
 The simulation was done in gazebo fortress.<br>
-You must install the specific requirement of the project in order to run correctly.
+You must install the specific requirement of the project in order to run correctly.<br>
 **Also read the notes at the end of the Readme**
 
 ## Getting started

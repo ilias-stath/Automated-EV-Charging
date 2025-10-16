@@ -60,14 +60,14 @@ rosdep install --from-paths src --ignore-src -r -y
 unset GZ_SIM_RESOURCE_PATH
 nano ~/.bashrc
 # add the export line at the end of the .bashrc
-export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
+export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Automated-EV-Charging/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
 source ~/.bashrc
 echo $GZ_SIM_RESOURCE_PATH
 ```
 * Alternatively, if you do not want to edit the .bashrc you can just export the paths
 ```
 unset GZ_SIM_RESOURCE_PATH
-export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
+export GZ_SIM_RESOURCE_PATH=/root/ev_charge/install/ur_simulation_gz/share/ur_simulation_gz/models:/root/ev_charge/src/Automated-EV-Charging/Universal_Robots_ROS2_GZ_Simulation/ur_simulation_gz/models
 echo $GZ_SIM_RESOURCE_PATH
 ```
 

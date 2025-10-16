@@ -24,7 +24,7 @@ You must install the specific requirement of the project in order to run correct
 ```
 mkdir -p ev_charge/src
 ```
-* Download the project using the git clone command.
+* Download the project inside the src folder using the git clone command.
 ```
 git clone https://github.com/ilias-stath/Automated-EV-Charging.git
 ```

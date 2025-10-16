@@ -60,7 +60,7 @@ sudo apt install \
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 ```
-6. At last, before you build you must export the path correctly so the gazebo fortress can locate the 3d-models: 
+6. At last, before you build you must export the path correctly so the gazebo fortress can locate the 3d-models:<br>
    a. Edit the .basrch (better)
    ```
    unset GZ_SIM_RESOURCE_PATH
@@ -80,12 +80,12 @@ rosdep install --from-paths src --ignore-src -r -y
 ## Running the example
 In order to run the example and test the procedure you must follow these 2 simple steps.<br>
 
-* Launch the simulated enviroment
+1. Launch the simulated enviroment
 ```
 ros2 launch ur_simulation_gz ur_sim_moveit.launch.py
 ```
 
-* Launch the nodes (in a seperate terminal)
+2. Launch the nodes (in a seperate terminal)
 ```
 ros2 launch ur_simulation_gz EV_charge.launch.py
 ```

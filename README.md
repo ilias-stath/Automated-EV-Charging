@@ -60,8 +60,8 @@ sudo apt install \
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
 ```
-6. Exports path for gazebo: 
-   a. At last, before you build you must export the path correctly so the gazebo fortress can locate the 3d-models
+6. At last, before you build you must export the path correctly so the gazebo fortress can locate the 3d-models: 
+   a. Edit the .basrch (better)
    ```
    unset GZ_SIM_RESOURCE_PATH
    nano ~/.bashrc

@@ -2,7 +2,6 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 import numpy as np
-# from cv_bridge import CvBridge
 import cv2
 
 class ImageViewer(Node):
@@ -13,13 +12,11 @@ class ImageViewer(Node):
             '/yolo/annotated',  
             self.listener_callback,
             10)
-        # self.bridge = CvBridge()
 
         # Create a resizable window
         cv2.namedWindow("Camera View", cv2.WINDOW_NORMAL)
 
     def listener_callback(self, msg):
-        # cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         cv_image = self.ros_image_to_cv2(msg)
         cv2.imshow("Camera View", cv_image)
         cv2.waitKey(1)

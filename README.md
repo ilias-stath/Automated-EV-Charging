@@ -33,7 +33,7 @@ git clone https://github.com/ilias-stath/Automated-EV-Charging.git
 ```
 pip install -r requirements.txt
 ```
-If you use a vulcanexus container, then you probably only need this install:
+**If you use a vulcanexus container, then you probably only need this install:
 ```
 pip install ultralytics
 ```

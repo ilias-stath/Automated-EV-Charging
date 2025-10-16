@@ -17,7 +17,6 @@ setup(
                     'numpy',
                     'opencv-python',
                     'scipy',
-                    # 'scikit-learn',
                     'ultralytics',
                     'cv_bridge'],
     zip_safe=True,
@@ -30,9 +29,6 @@ setup(
         'console_scripts': [
             'yolo_node = yolo_model.yolo_node:main',
             'image_view = yolo_model.image_view:main',
-            'print_pc = yolo_model.print_pc:main',
-            'shape_detector = yolo_model.shape_detector:main',
-            'find_K_D_matrices = yolo_model.find_K_D_matrices:main',
         ],
     },
 )
